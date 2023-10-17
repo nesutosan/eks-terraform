@@ -36,15 +36,15 @@ module "vpc" {
   // The IPv4 CIDR block for the VPC.
   cidr = "172.32.0.0/16"
   // A list of availability zones names or ids in the region
-  azs  = slice(data.aws_availability_zones.available.names, 0, 3)
+  azs = slice(data.aws_availability_zones.available.names, 0, 3)
 
   private_subnets = ["172.32.1.0/24", "172.32.2.0/24", "172.32.3.0/24"]
   public_subnets  = ["172.32.4.0/24", "172.32.5.0/24", "172.32.6.0/24"]
 
   // Provision NAT Gateways for each of your private networks.
-  enable_nat_gateway   = true
+  enable_nat_gateway = true
   // Provision a single shared NAT Gateway across all of your private networks.
-  single_nat_gateway   = true
+  single_nat_gateway     = true
   one_nat_gateway_per_az = false
   // Enable DNS hostnames in the VPC.
   enable_dns_hostnames = true
@@ -72,8 +72,8 @@ module "eks" {
   cluster_version = "1.27"
 
   // get vpc_id, private_subnets from output of vpc module
-  vpc_id                         = module.vpc.vpc_id
-  subnet_ids                     = module.vpc.private_subnets
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
 
   // Indicates the Amazon EKS public API server endpoint is enabled
   cluster_endpoint_public_access = true
@@ -90,7 +90,7 @@ module "eks" {
     one = {
       name = "node-group-1"
       // for test only
-      instance_types = ["t2.micro"]
+      instance_types = ["t3.small"]
 
       min_size     = 1
       max_size     = 3
@@ -100,7 +100,7 @@ module "eks" {
     two = {
       name = "node-group-2"
       // for test only
-      instance_types = ["t2.micro"]
+      instance_types = ["t3.small"]
 
       min_size     = 1
       max_size     = 2
